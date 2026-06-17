@@ -40,7 +40,7 @@ int main() {
     int hr_predict;
     char buffer[50];
     char *endptr;
-    char answer[1];
+    char answer[10];
     
     while(1) {
         
@@ -89,10 +89,11 @@ int main() {
         }
         
         printf("Would you like to run the calculation for another player? (y/n)");
+
         if (fgets(answer, sizeof(answer), stdin) == NULL) {
             fprintf(stderr, "Input error\n");
         }
-        if (strcmp(answer, "n") == 0 || strcmp(answer, "N") == 0) {
+        if (answer[0] == "n" || answer[0] == "N") {
             break;
         }
     }
