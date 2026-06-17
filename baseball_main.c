@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <errno.h>
 
 
 int factorial(int n) {
@@ -36,18 +37,39 @@ int main() {
     
     double home_runs;
     int hr_predict;
+    char buffer[50];
+    char *endptr;
     
     printf("Please enter the average number of home runs for a specific \n"
            "player for a specific time frame (e.g. a single game): ");
-    
-    while (scanf("%lf", &home_runs) != 1) {
-        printf("Invalid input. Please enter a number.");
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+        fprintf(stderr, "Input error\n");
+        
+        errno = 0;
+        
+        home_runs = strtod(buffer, &endptr);
+        if (endptr == buffer) {
+            printf("Error: No valid number was found.\n");
+        } else if (errno == ERANGE) {
+            printf("Error: The number is too large or too small.\n");
+        } else {
+            printf("Successfully parsed number: %lf\n", home_runs);
     }
     
-    printf("Please enter the number of home runs you would like to find the probability for: ");
     
-    while (scanf("%d", &hr_predict) != 1) {
-        printf("Invalid input. Please enter an integer.");
+    printf("Please enter the number of home runs you would like to find the probability for: ");
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+        fprintf(stderr, "Input error\n");
+            
+        errno = 0;
+            
+        home_runs = strtod(buffer, &endptr);
+        if (endptr == buffer) {
+            printf("Error: No valid number was found.\n");
+        } else if (errno == ERANGE) {
+            printf("Error: The number is too large or too small.\n");
+        } else {
+            printf("Successfully parsed number: %lf\n", home_runs);
     }
     
     double poisson_count = poisson(home_runs, hr_predict);
@@ -66,5 +88,5 @@ int main() {
         printf("The probability of the player hitting %d home runs is %lf", hr_predict, poisson_count);
     }
     
-    
+    return 0;
 }
