@@ -5,7 +5,10 @@
 //  Created by Kyle Hecker on 6/11/26.
 //
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
+
 
 int factorial(int n) {
     if (n == 0) {
@@ -34,7 +37,7 @@ int main() {
     double home_runs;
     int hr_predict;
     
-    printf("Please enter the average number of home runs for a specific /n"
+    printf("Please enter the average number of home runs for a specific \n"
            "player for a specific time frame (e.g. a single game): ");
     
     while (scanf("%lf", &home_runs) != 1) {
@@ -48,18 +51,20 @@ int main() {
     }
     
     double poisson_count = poisson(home_runs, hr_predict);
+    double poisson_sum = 0;
     
-    if (hr_predict > 1) {
+    if (hr_predict > 0) {
         for (int i=0; i < hr_predict; i++) {
-            double poisson_sum = poisson_count + poisson_sum;
+            poisson_sum += poisson(home_runs, i);
         }
         
+        double final_poisson = 1.0 - poisson_sum;
         
-        printf("The probability of the player hitting %d home runs is %lf", hr_predict, poisson_sum);
+        printf("The probability of the player hitting at least %d home run(s) is %lf", hr_predict, final_poisson);
+        
+    } else {
+        printf("The probability of the player hitting %d home runs is %lf", hr_predict, poisson_count);
     }
-    
-    printf("The probability of the player hitting %d home runs is %lf", hr_predict, poisson_count);
-    
     
     
 }
